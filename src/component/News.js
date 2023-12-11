@@ -25,8 +25,9 @@ export class News extends Component {
       disableNextClick: false
     }
   }
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=459ebdee766c40af823c8a7615a49fc0&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+
+  async updateNews(){
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=459ebdee766c40af823c8a7615a49fc0&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({
       loading: true,
     })
@@ -38,43 +39,69 @@ export class News extends Component {
       articles: parsedData.articles,
       totalResults: parsedData.totalResults
     })
+    console.log(this.state.page)
+    console.log(this.state.articles)
+    console.log(parsedData)
 
-    console.log(url);
+
+  }
+  async componentDidMount() {
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=459ebdee766c40af823c8a7615a49fc0&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    // this.setState({
+    //   loading: true,
+    // })
+    // let response = await fetch(url);
+    // let parsedData = await response.json();
+
+    // this.setState({
+    //   loading: false,
+    //   articles: parsedData.articles,
+    //   totalResults: parsedData.totalResults
+    // })
+    this.updateNews()
+    // console.log(url);
   }
   handlePrevClick = async () => {
-
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=459ebdee766c40af823c8a7615a49fc0&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+    
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=459ebdee766c40af823c8a7615a49fc0&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+    // this.setState({
+    //   loading: true,
+    // })
+    // let response = await fetch(url);
+    // let parsedData = await response.json();
+    // this.setState({
+    //   loading: false,
+    //   page: this.state.page - 1,
+    //   articles: parsedData.articles,
+      
+      
+    // })
+    // console.log(this.state.page)
     this.setState({
-      loading: true,
+      page:this.state.page+1
     })
-    let response = await fetch(url);
-    let parsedData = await response.json();
-    this.setState({
-      loading: false,
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-
-
-    })
-    console.log(this.state.page)
-
-
+    this.updateNews()
+    
+    
   }
   handleNextClick = async () => {
-
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=459ebdee766c40af823c8a7615a49fc0&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-    console.log(url)
     this.setState({
-      loading: true,
+      page:this.state.page+1
     })
-    let response = await fetch(url);
-    let parsedData = await response.json();
-    this.setState({
-      loading: false,
-      page: (this.state.page + 1),
-      articles: parsedData.articles
-    })
-    console.log(this.state.page)
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=459ebdee766c40af823c8a7615a49fc0&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+    // console.log(url)
+    // this.setState({
+    //   loading: true,
+    // })
+    // let response = await fetch(url);
+    // let parsedData = await response.json();
+    // this.setState({
+    //   loading: false,
+    //   page: (this.state.page + 1),
+    //   articles: parsedData.articles
+    // })
+    this.updateNews()
+    // console.log(this.state.page)
 
 
   }
@@ -84,7 +111,7 @@ export class News extends Component {
 
         <div className='container mt-3 h-screen'>
           <h1 className='text-center'>NewsCenter - Top Headlines</h1>
-          <div className='row md-4'>
+          <div className='row'>
             {!this.state.loading && this.state.articles.map((element) => {
               return <div className='col' key={element.url}>
                 <NewsItem
@@ -92,6 +119,8 @@ export class News extends Component {
                   newsUrl={element.url}
                   desc={element.description && element.description.slice(0, 88)}
                   title={element.title && element.title.slice(0, 45)}
+                  date={element.publishedAt}
+                  author={element.author}
                 />
               </div>
             })}
