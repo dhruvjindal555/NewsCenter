@@ -12,8 +12,7 @@ const App =()=> {
 
   
   const [apiKey] = useState(process.env.REACT_APP_NEWS_API)
-  // "459ebdee766c40af823c8a7615a49fc0"
-  // 
+   
     return (
       <>
         <Router>
